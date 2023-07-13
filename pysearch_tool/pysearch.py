@@ -3,6 +3,7 @@
 #(might delete if never used) import pathlib
 import os
 import yaml
+import json
 
 method_headfix = "https://github.com/inlab-geo/cofi/blob/main"
 
@@ -34,6 +35,7 @@ class pysearch:
         self._methods = []
         self._apps = []
         self._examples = []
+        self._method_to_examples = {}
 
     def mds(self):
         return self._methods
@@ -117,24 +119,51 @@ class pysearch:
                 for dirr in dirs:
                     parse(self._app_path + '/' + dirr + '/' + dirr + '.py')
         
+
+        self.init_method_to_examples()
         for root, dirs, files in os.walk(self._prob_path):
             if root == self._prob_path:
-                print(dirs)
                 for dirr in dirs:
-                    print(dirr)
                     try:
                         path = self._prob_path + '/' + dirr + '/'
                         with open(path + 'meta.yml', 'r') as file:
                             data = yaml.safe_load(file)
-                            print(data['notebook'][0]['application domain'].split(" -> "))
-                            print(example_headfix + '/' + dirr)
                             self._examples.append(App(data["notebook"][0]['title'],example_headfix + '/' + dirr, data['notebook'][0]['application domain'].split(" -> "), data['notebook'][0]['description']))
+                            #---------------------------exmaples parsing done! next is method to example
+                            all_code = []
+                            for file in data['notebook'][0]['file_to_parse']:
+                                try:
+                                    code_cells = self.extract_code_from_ipynb(path + file)
+                                    all_code += code_cells
+                                except Exception as e:
+                                    print(e)
+                            # print(all_code)
                     except Exception as e:
                         pass
 
             break
 
-        
+
+    def extract_code_from_ipynb(self, ipynb_file):
+        with open(ipynb_file, 'r') as f:
+            data = json.load(f)
+        code_cells = []
+        for cell in data['cells']:
+            if cell['cell_type'] == 'code':
+                # 'source' field contains the code
+                code_cells.append(cell['source'])
+        return code_cells
+    
+    def init_method_to_examples(self):
+        for path in self._methods:
+            for node in path.tree():
+                if node not in self._method_to_examples:
+                    self._method_to_examples[node] = []
+
+        print(self._method_to_examples.keys())
+        return
+
+    
 class Method:
     def __init__(self, name, path, tree, des):
         """
