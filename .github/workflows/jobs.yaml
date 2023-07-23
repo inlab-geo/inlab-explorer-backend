@@ -45,7 +45,7 @@ jobs:
 
     - name: Move generated JSON files to target repo
       run: |
-        mv this-repo/*.json target-repo/public  
+        mv *.json target-repo/public  
 
     - name: Commit and push
       working-directory: 'target-repo'
