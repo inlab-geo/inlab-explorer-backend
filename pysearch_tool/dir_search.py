@@ -87,7 +87,6 @@ class Search:
                             for k in data['method'].keys():
                                 gpath = "https://github.com/Denghu-JI/cofi-examples/tree/main/examples/"
                                 gpath += path[37:]
-                                print(k)
                                 e = Example(data['title'],k,gpath + k, data['application domain'].split(" -> "),data['description'],data['method'][k])
                                 self._examples.append(e)
                             #---------------------------exmaples parsing done! next is method to example
@@ -110,13 +109,11 @@ class Search:
             for example in self._examples:
                 if " -> ".join(method.tree()) in example.methods():
                     d = {}
-                    print(example.name() + ' - ' + example.filename())
                     d['name'] = example.name() + ' - ' + example.filename()
                     d['description'] = example.des()
                     d['linkToGit'] =  example.path()
                     method.add_examples(d)
-        print(self._methods[0].examples())
-        print(self._methods[0].tree())
+                    
 class Method:
     def __init__(self, path, tree, des):
         """

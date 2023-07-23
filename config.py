@@ -3,7 +3,7 @@
 import warnings
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, List, Literal, Optional, Tuple, Type
+from typing import Any, List, Optional, Tuple, Type
 
 class PrintableConfig:
     """Printable Config defining str function"""
@@ -50,9 +50,6 @@ class Base_config(PrintableConfig):
     git_submodule_hard_fetch : int = 0
     """0 : turn off     1 : turn on"""
     
-
-    git_mode: Literal["main", "fork", "test"] = "main"
-    """decide which repo will be clone"""
 
 
 
