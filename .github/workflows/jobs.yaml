@@ -17,9 +17,29 @@ jobs:
         repository: 'inlab-geo/cofi'
         path: 'cofi'
     
-    - name: Copy cofi folder to public folder in target repo
+    - name: Copy files to search engine
       run: |
         cp -R cofi/. pysearch_tool/cofi
+
+    - name: Checkout source repo (espresso)
+      uses: actions/checkout@v2
+      with:
+        repository: 'inlab-geo/espresso'
+        path: 'espresso'
+    
+    - name: Copy files to search engine
+      run: |
+        cp -R espresso/. pysearch_tool/espresso
+
+    - name: Checkout source repo (cofi-example)
+      uses: actions/checkout@v2
+      with:
+        repository: 'inlab-geo/cofi-examples'
+        path: 'cofi-examples'
+    
+    - name: Copy files to search engine
+      run: |
+        cp -R cofi-examples/. pysearch_tool/cofi-examples
 
 
     - name: Checkout target repo
