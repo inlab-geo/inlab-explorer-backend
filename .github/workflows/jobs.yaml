@@ -19,8 +19,6 @@ jobs:
     
     - name: Copy cofi folder to public folder in target repo
       run: |
-        mkdir pysearch_tool
-        mkdir pysearch_tool/cofi
         cp -R cofi/. pysearch_tool/cofi
 
 
