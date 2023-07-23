@@ -9,7 +9,7 @@ from config import Base_config
 from relation_dict import hirc_tree, insert, relation_dict
 from pysearch_tool import dir_search
 import json
-import boto3
+# import boto3
 
 
 
@@ -37,9 +37,9 @@ def main(Base_config):
         example_tree = insert(example_tree,i)
 
 
-    s3 = boto3.client('s3')
-    bucket_name = 'jsonofthetree'
-    json_key = 'data.json'
+    # s3 = boto3.client('s3')
+    # bucket_name = 'jsonofthetree'
+    # json_key = 'data.json'
 
 
     method_rel_key = "method_relation.json"
@@ -63,9 +63,9 @@ def main(Base_config):
     json_relation_app = json.dumps(relation_app)
     json_relation_example = json.dumps(relation_example)
 
-    s3.put_object(Bucket=bucket_name, Key=method_rel_key, Body=json_relation_method, ACL='public-read')
-    s3.put_object(Bucket=bucket_name, Key=app_rel_key, Body=json_relation_app, ACL='public-read')
-    s3.put_object(Bucket=bucket_name, Key=example_rel_key, Body=json_relation_example, ACL='public-read')
+    # s3.put_object(Bucket=bucket_name, Key=method_rel_key, Body=json_relation_method, ACL='public-read')
+    # s3.put_object(Bucket=bucket_name, Key=app_rel_key, Body=json_relation_app, ACL='public-read')
+    # s3.put_object(Bucket=bucket_name, Key=example_rel_key, Body=json_relation_example, ACL='public-read')
 
 
 
