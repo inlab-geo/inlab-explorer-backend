@@ -1,0 +1,54 @@
+name: Clone, copy, and push cofi repo
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  copy-repo:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout source repo (cofi)
+      uses: actions/checkout@v2
+      with:
+        repository: 'inlab-geo/cofi'
+        path: 'cofi'
+    
+    - name: Copy cofi folder to public folder in target repo
+      run: |
+        cp -R cofi/. pyserach_tool/cofi
+
+
+    - name: Checkout target repo
+      uses: actions/checkout@v2
+      with:
+        repository: 'Denghu-JI/AWS-app-hosting'
+        token: ${{ secrets.PAT }} 
+        path: 'target-repo'
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt 
+
+    - name: Run the script and generate JSON files
+      run: |
+        python main.py  # Modify this if your script is in a different location
+
+    - name: Move generated JSON files to target repo
+      run: |
+        mv this-repo/*.json target-repo/public  
+
+    - name: Commit and push
+      working-directory: 'target-repo'
+      run: |
+        git config user.email "<your-email>"
+        git config user.name "<your-name>"
+        git add public/*.json
+        git commit -m "Added JSON files"
+        git push
