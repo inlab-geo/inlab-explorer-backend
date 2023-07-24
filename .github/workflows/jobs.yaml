@@ -70,9 +70,15 @@ jobs:
         mv *.json target-repo/public 
     
     - name: Check for changes
-      id: check
+      id: changes
       run: |
-        git diff --exit-code > /dev/null && echo "No changes to commit" || echo "Changes detected" && echo ::set-output name=changes_detected::true
+        if [[ -n $(git status --porcelain) ]]; then
+          echo "Changes detected"
+          echo "changes_detected=true" >> $GITHUB_ENV
+        else
+          echo "No changes to commit"
+        fi
+
 
     - name: Commit and push
       working-directory: 'target-repo'
