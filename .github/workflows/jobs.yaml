@@ -71,6 +71,7 @@ jobs:
         
     - name: Check for changes
       run: |
+        git add .
         if ! git diff --quiet
         then
           echo "changes_detected=true" >> $GITHUB_ENV
