@@ -72,8 +72,8 @@ jobs:
     - name: Commit and push
       working-directory: 'target-repo'
       run: |
-        git config user.email "<your-email>"
-        git config user.name "<your-name>"
+        git config user.email "denghu.ji7201@gmail.com"
+        git config user.name "Auto-reaction-update"
         git add public/*.json
         git commit -m "Added JSON files"
         git push
