@@ -5,13 +5,6 @@ import os
 import yaml
 import json
 
-method_headfix = "https://github.com/inlab-geo/cofi/blob/main"
-
-application_headfix = "https://github.com/inlab-geo/espresso/tree/main"
-folder_name = "contrib"
-
-
-example_headfix = "https://github.com/inlab-geo/cofi-examples/tree/main/examples"
 
 class Search:
     def __init__(self, config):
@@ -32,6 +25,7 @@ class Search:
         self._method_path = config.search_folder + config.method_folder
         self._app_path = config.search_folder + config.application_folder
         self._prob_path = config.search_folder + config.example_folder
+        self._config = config
         self._methods = []
         self._apps = []
         self._examples = []
@@ -56,13 +50,13 @@ class Search:
                             if mode == "Method":
                                 method_tree = line.strip('\n')[2:].split(" -> ")
                                 method_description = file.readline().strip('\n')[15:]
-                                method = Method(method_headfix + file_path[18:], method_tree, method_description)
+                                method = Method(self._config.method_headfix + file_path[18:], method_tree, method_description)
                                 self._methods.append(method)
                             if mode == "Application":
                                 app_tree = line.strip('\n')[2:].split(" -> ")
                                 app_des = file.readline().strip('\n')[15:]
-                                app_path = application_headfix + file_path[22:]
-                                print(app_path)
+                                app_path = self._config.application_headfix + file_path[23:]
+                                print(file_path[22:])
                                 self._apps.append(App(app_path, app_tree, app_des))                    
                     else:
                         break
@@ -85,7 +79,8 @@ class Search:
                         with open(path + 'meta.yml', 'r') as file:
                             data = yaml.safe_load(file)
                             for k in data['method'].keys():
-                                gpath = "https://github.com/Denghu-JI/cofi-examples/tree/main/examples/"
+                                gpath = self._config.example_headfix
+                                # gpath = "https://github.com/Denghu-JI/cofi-examples/tree/main/examples/"
                                 gpath += path[37:]
                                 e = Example(data['title'],k,gpath + k, data['application domain'].split(" -> "),data['description'],data['method'][k])
                                 self._examples.append(e)
