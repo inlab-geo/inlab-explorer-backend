@@ -67,7 +67,12 @@ jobs:
 
     - name: Move generated JSON files to target repo
       run: |
-        mv *.json target-repo/public  
+        mv *.json target-repo/public 
+    
+    - name: Check for changes
+      id: check
+      run: |
+        git diff --exit-code > /dev/null && echo "No changes to commit" || echo "Changes detected" && echo ::set-output name=changes_detected::true
 
     - name: Commit and push
       working-directory: 'target-repo'
