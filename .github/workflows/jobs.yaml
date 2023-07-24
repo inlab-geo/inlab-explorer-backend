@@ -71,6 +71,7 @@ jobs:
         
     - name: Check for changes
       run: |
+        cd target-repo
         git add .
         if [[ -n "$(git status --porcelain)" ]]; then
           echo "changes_detected=true" >> $GITHUB_ENV
@@ -78,6 +79,7 @@ jobs:
 
     - name: Commit and push if changes detected
       run: |
+        cd target-repo
         if [[ "$changes_detected" == "true" ]]
         then
           git config user.email "denghu.ji7201@gmail.com"
