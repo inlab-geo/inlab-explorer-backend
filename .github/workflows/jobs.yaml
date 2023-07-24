@@ -69,22 +69,17 @@ jobs:
       run: |
         mv *.json target-repo/public 
     
-    - name: Check for changes
-      id: changes
-      run: |
-        if [[ -n $(git status --porcelain) ]]; then
-          echo "Changes detected"
-          echo "changes_detected=true" >> $GITHUB_ENV
-        else
-          echo "No changes to commit"
-        fi
-
 
     - name: Commit and push
       working-directory: 'target-repo'
       run: |
-        git config user.email "denghu.ji7201@gmail.com"
-        git config user.name "Auto-reaction-update"
-        git add public/*.json
-        git commit -m "Added JSON files"
-        git push
+        if [[ "${{ env.changes_detected }}" == "true" ]]; then
+          git config user.email "denghu.ji7201@gmail.com"
+          git config user.name "Auto-reaction-update"
+          git add public/*.json
+          git commit -m "Added JSON files"
+          git push
+        else
+          echo "No changes to push"
+          exit 0
+        fi
