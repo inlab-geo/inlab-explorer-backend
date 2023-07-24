@@ -55,8 +55,8 @@ class Search:
                             if mode == "Application":
                                 app_tree = line.strip('\n')[2:].split(" -> ")
                                 app_des = file.readline().strip('\n')[15:]
-                                app_path = self._config.application_headfix + file_path[23:]
-                                print(file_path[22:])
+                                app_path = self._config.application_headfix + file_path[22:]
+                                print(app_path)
                                 self._apps.append(App(app_path, app_tree, app_des))                    
                     else:
                         break
@@ -67,7 +67,7 @@ class Search:
         for root, dirs, files in os.walk(self._app_path):
             if root == self._app_path:
                 for dirr in dirs:
-                    parse(self._app_path + '/' + dirr + '/' + dirr + '.py', "Application")
+                    parse(self._app_path + dirr + '/' + dirr + '.py', "Application")
         
 
         # self.init_method_to_examples()
@@ -84,17 +84,8 @@ class Search:
                                 gpath += path[37:]
                                 e = Example(data['title'],k,gpath + k, data['application domain'].split(" -> "),data['description'],data['method'][k])
                                 self._examples.append(e)
-                            #---------------------------exmaples parsing done! next is method to example
-
-
-                                # try:
-                                #     code_cells = self.extract_code_from_ipynb(path + file)
-                                #     all_code += code_cells
-                                # except Exception as e:
-                                #     print(e)
-                            # print(all_code)
                     except Exception as e:
-                        # print(e)
+                        print(e)
                         pass
 
             break
@@ -108,6 +99,7 @@ class Search:
                     d['description'] = example.des()
                     d['linkToGit'] =  example.path()
                     method.add_examples(d)
+        print(self._examples)
                     
 class Method:
     def __init__(self, path, tree, des):

@@ -4,7 +4,6 @@ Please see config.py to change any of configs.
 """
 
 
-# from pysearch_tool import local_paser, git_link
 from config import Base_config
 from relation_dict import hirc_tree, insert, relation_dict
 from pysearch_tool import dir_search
@@ -19,12 +18,11 @@ import json
 
 
 def main(Base_config):
-    # f = dir_search.Search(Base_config)
     p = dir_search.Search(Base_config)
     p._search()
     method_tree = hirc_tree('CoFI')
-    apps_tree = hirc_tree('37 Earth Sciences')
-    example_tree = hirc_tree('37 Earth Sciences')
+    apps_tree = hirc_tree('37 EARTH SCIENCES')
+    example_tree = hirc_tree('37 EARTH SCIENCES')
     # method_tree, application_tree, example_tree = build_tree(Base_config)
 
     for i in p.mds():
@@ -35,6 +33,8 @@ def main(Base_config):
     
     for i in p.examples():
         example_tree = insert(example_tree,i)
+
+    print(apps_tree.children()[1].me())
 
 
     # s3 = boto3.client('s3')

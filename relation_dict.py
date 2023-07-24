@@ -104,6 +104,7 @@ def insert(tre, node):
             if token == tre.me():
                 flag = False
                 child = lst[0]
+                print(child)
                 for tok in tre.children():
                     if child == tok.me():
                         insert(tok, node)
