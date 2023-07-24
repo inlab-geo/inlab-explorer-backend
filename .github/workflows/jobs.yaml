@@ -79,7 +79,6 @@ jobs:
 
     - name: Commit and push if changes detected
       run: |
-        cd target-repo
         if [[ "$changes_detected" == "true" ]]
         then
           git config user.email "denghu.ji7201@gmail.com"
