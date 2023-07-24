@@ -62,7 +62,7 @@ class Search:
                         break
         for _, _ , files in os.walk(self._method_path):
             for i in files:
-                parse(self._method_path + '/' + i, "Method")
+                parse(self._method_path + i, "Method")
 
         for root, dirs, files in os.walk(self._app_path):
             if root == self._app_path:
