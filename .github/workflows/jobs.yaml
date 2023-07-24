@@ -3,6 +3,8 @@ name: Clone, copy, and push cofi repo
 on:
   push:
     branches: [ main ]
+  repository_dispatch:
+    types: [new_commit]
 
 jobs:
   copy-repo:
