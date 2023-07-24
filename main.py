@@ -4,7 +4,7 @@ Please see config.py to change any of configs.
 """
 
 
-from pysearch_tool import local_paser, git_link
+# from pysearch_tool import local_paser, git_link
 from config import Base_config
 from relation_dict import hirc_tree, insert, relation_dict
 from pysearch_tool import dir_search
