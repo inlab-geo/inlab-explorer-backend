@@ -34,7 +34,8 @@ def main(Base_config):
     for i in p.examples():
         example_tree = insert(example_tree,i)
 
-    print(apps_tree.children()[1].me())
+    # print(method_tree.children()[1].me())
+    # print(method_tree.children()[1].examples())
 
 
     # s3 = boto3.client('s3')

@@ -42,21 +42,31 @@ class Search:
     
     def _search(self):
         def parse(file_path, mode):
+            temp_line = None
             with open(file_path) as file:
                 while True:
-                    line = file.readline()
+                    if temp_line:
+                        line = temp_line
+                        temp_line = None
+                    else:
+                        line = file.readline()
                     if line:
                         if "->" in line and "#" in line:
                             if mode == "Method":
                                 method_tree = line.strip('\n')[2:].split(" -> ")
                                 method_description = file.readline().strip('\n')[15:]
                                 method = Method(self._config.method_headfix + file_path[18:], method_tree, method_description)
+                                
+                                temp_line = file.readline()
+                                if temp_line[:16] == '# documentation:':
+                                    method._documentLink = temp_line[17:]
+                                    temp_line = None
                                 self._methods.append(method)
                             if mode == "Application":
                                 app_tree = line.strip('\n')[2:].split(" -> ")
                                 app_des = file.readline().strip('\n')[15:]
                                 app_path = self._config.application_headfix + file_path[22:]
-                                print(app_path)
+                                # print(app_path)
                                 self._apps.append(App(app_path, app_tree, app_des))                    
                     else:
                         break
@@ -85,7 +95,7 @@ class Search:
                                 e = Example(data['title'],k,gpath + k, data['application domain'].split(" -> "),data['description'],data['method'][k])
                                 self._examples.append(e)
                     except Exception as e:
-                        print(e)
+                        # print(e)
                         pass
 
             break
@@ -99,7 +109,7 @@ class Search:
                     d['description'] = example.des()
                     d['linkToGit'] =  example.path()
                     method.add_examples(d)
-        print(self._examples)
+        # print(self._examples)
                     
 class Method:
     def __init__(self, path, tree, des):
@@ -118,6 +128,7 @@ class Method:
         self._path = path
         self._tree = tree
         self._des = des
+        self._documentLink = None
         self._examples = []
     
     
@@ -129,6 +140,9 @@ class Method:
     
     def des(self):
         return self._des
+    
+    def doc(self):
+        return self._documentLink
 
     def examples(self):
         return self._examples
@@ -155,6 +169,7 @@ class App:
         self._path = path
         self._tree = tree
         self._des = des
+        self._documentLink = None
     
     def path(self):
         return self._path
@@ -164,6 +179,9 @@ class App:
     
     def des(self):
         return self._des
+    
+    def doc(self):
+        return self._documentLink
 
 
 class Example:
@@ -186,6 +204,7 @@ class Example:
         self._tree = tree
         self._des = des
         self._methods = methods
+        self._documentLink = None
     
     def name(self):
         return self._name
@@ -204,4 +223,7 @@ class Example:
     
     def methods(self):
         return self._methods
+    
+    def doc(self):
+        return self._documentLink
             

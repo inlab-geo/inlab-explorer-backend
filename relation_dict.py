@@ -49,6 +49,7 @@ class hirc_tree:
         self._path = None
         self._description = None
         self._examples = []
+        self._doc = None
 
         #---graphics property
         self.x = None
@@ -92,6 +93,12 @@ class hirc_tree:
             if i['name'] not in [j['name'] for j in self._examples]:
                 self._examples.append(i)
 
+    def add_doc(self, d):
+        self._doc = d
+
+    def doc(self):
+        return self._doc
+
 def insert(tre, node):
         try:
             tre.add_examples(node.examples())
@@ -104,7 +111,6 @@ def insert(tre, node):
             if token == tre.me():
                 flag = False
                 child = lst[0]
-                print(child)
                 for tok in tre.children():
                     if child == tok.me():
                         insert(tok, node)
@@ -117,6 +123,7 @@ def insert(tre, node):
         else:
             tre.add_description(node.des())
             tre.add_path(node.path())
+            tre.add_doc(node.doc())
             
         return tre
 
@@ -130,7 +137,7 @@ def relation_pack(node):
     node_dict = {}
     node_dict["name"] = node.me()
     node_dict["link_git"] = node.path()
-    # node_dict["link_doc"] = "https://www.google.com.au"
+    node_dict["link_doc"] = node.doc()
     if node.examples():
         node_dict["examples"] = node.examples()
     node_dict["children"] = []
