@@ -29,7 +29,8 @@
 #         pygimli_dcip.ipynb <- Newton conjugate gradient trust-region algorithm (trust-ncg) <- scipy.optimize.minimize <- non-linear <- optimization <- parameter estimation <- CoFI
 #         pygimli_dcip.ipynb <- RAdam <- torch.optim <- non-linear <- optimization <- parameter estimation <- CoFI
 
-
+import yaml
+from config import Base_config
 class hirc_tree:
     def __init__(self, me):
         """
@@ -134,18 +135,25 @@ def relation_dict(node):
     return relation_pack(node)
 
 def relation_pack(node):
-    node_dict = {}
-    node_dict["name"] = node.me()
-    node_dict["link_git"] = node.path()
-    node_dict["link_doc"] = node.doc()
-    if node.examples():
-        node_dict["examples"] = node.examples()
-    node_dict["children"] = []
-    node_dict["description"] = node.description()
-    if node.children():
-        for j in node.children():
-            node_dict["children"].append(relation_pack(j))
-    return node_dict
+    with open(Base_config.meta_path) as file:
+        data = yaml.safe_load(file)
+        node_dict = {}
+        node_dict["name"] = node.me()
+        node_dict["link_git"] = node.path()
+        
+        if node.me() in data['Documentation'].keys():
+            print(data['Documentation'][node.me()])
+            node_dict["link_doc"] = data['Documentation'][node.me()]
+        else:
+            node_dict["link_doc"] = node.doc()
+        if node.examples():
+            node_dict["examples"] = node.examples()
+        node_dict["children"] = []
+        node_dict["description"] = node.description()
+        if node.children():
+            for j in node.children():
+                node_dict["children"].append(relation_pack(j))
+        return node_dict
 
 
 #------------------------

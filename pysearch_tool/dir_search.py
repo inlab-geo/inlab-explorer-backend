@@ -109,7 +109,7 @@ class Search:
                     d['description'] = example.des()
                     d['linkToGit'] =  example.path()
                     method.add_examples(d)
-        # print(self._examples)
+
                     
 class Method:
     def __init__(self, path, tree, des):

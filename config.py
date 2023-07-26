@@ -44,12 +44,9 @@ class Base_config(PrintableConfig):
     application_headfix = "https://github.com/inlab-geo/espresso/tree/main"
     example_headfix = "https://github.com/inlab-geo/cofi-examples/tree/main/examples"
     """this will be the headfix in the website address, to navigate to git repo"""
+    
+    meta_path = "pysearch_tool/cofi/src/cofi/tools/meta.yaml"
 
-    clean_json_after_run : int = 0
-    """0 : turn off     1 : turn on"""
-
-    git_submodule_hard_fetch : int = 0
-    """0 : turn off     1 : turn on"""
     
 
 
