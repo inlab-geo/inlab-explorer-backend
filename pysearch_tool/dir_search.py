@@ -89,7 +89,7 @@ class Search:
                         with open(path + 'meta.yml', 'r') as file:
                             data = yaml.safe_load(file)
                             for k in data['method'].keys():
-                                gpath = self._config.example_headfix
+                                gpath = self._config.example_headfix + "/"
                                 # gpath = "https://github.com/Denghu-JI/cofi-examples/tree/main/examples/"
                                 gpath += path[37:]
                                 e = Example(data['title'],k,gpath + k, data['application domain'].split(" -> "),data['description'],data['method'][k])
@@ -108,6 +108,7 @@ class Search:
                     d['name'] = example.name() + ' - ' + example.filename()
                     d['description'] = example.des()
                     d['linkToGit'] =  example.path()
+                    print(example.path())
                     method.add_examples(d)
 
                     
