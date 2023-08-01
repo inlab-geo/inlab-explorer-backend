@@ -103,7 +103,6 @@ class Search:
                     d['name'] = example.name() + ' - ' + example.filename()
                     d['description'] = example.des()
                     d['linkToGit'] =  example.path()
-                    print(example.path())
                     method.add_examples(d)
 
                     

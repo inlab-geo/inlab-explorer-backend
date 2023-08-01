@@ -135,15 +135,29 @@ def relation_dict(node):
     return relation_pack(node)
 
 def relation_pack(node):
-    with open(Base_config.meta_path) as file:
-        data = yaml.safe_load(file)
+    data_doc = {}
+    data_git = {}
+    with open(Base_config.search_folder + Base_config.method_folder + "__init__.py") as file:
+        while True:
+            line = file.readline()
+            if line:
+                if line[:12]=="# LinkDoc : ":
+                    data_doc[line.strip('\n')[12:].split(" -> ")[0]] = line.strip('\n')[12:].split("->")[1]
+                if line[:12]=="# LinkGit : ":
+                    data_git[line.strip('\n')[12:].split(" -> ")[0]] = line.strip('\n')[12:].split("->")[1]
+            else:
+                break
+
         node_dict = {}
         node_dict["name"] = node.me()
-        node_dict["link_git"] = node.path()
+ 
+        if node.me() in data_git.keys():
+            node_dict["link_git"] = data_git[node.me()]
+        else:
+            node_dict["link_git"] = node.path()
         
-        if node.me() in data['Documentation'].keys():
-            print(data['Documentation'][node.me()])
-            node_dict["link_doc"] = data['Documentation'][node.me()]
+        if node.me() in data_doc.keys():
+            node_dict["link_doc"] = data_doc[node.me()]
         else:
             node_dict["link_doc"] = node.doc()
         if node.examples():

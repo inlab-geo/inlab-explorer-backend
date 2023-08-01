@@ -16,11 +16,7 @@ from ._reg_base import BaseRegularization
 from ._reg_lp_norm import LpNormRegularization, QuadraticReg
 from ._reg_model_cov import ModelCovariance, GaussianPrior
 
-<<<<<<< HEAD
 from ._multiple_runs import InversionPool
-=======
-from ._multiple_runs import run_multiple_inversions
->>>>>>> change yaml
 
 
 __all__ = [
@@ -29,9 +25,5 @@ __all__ = [
     "QuadraticReg",
     "ModelCovariance",
     "GaussianPrior",
-<<<<<<< HEAD
     "InversionPool",
-=======
-    "run_multiple_inversions",
->>>>>>> change yaml
 ]
