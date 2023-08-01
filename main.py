@@ -23,8 +23,7 @@ def main(Base_config):
     method_tree = hirc_tree('CoFI')
     apps_tree = hirc_tree('37 EARTH SCIENCES')
     example_tree = hirc_tree('37 EARTH SCIENCES')
-    # method_tree, application_tree, example_tree = build_tree(Base_config)
-
+    
     for i in p.mds():
         method_tree = insert(method_tree,i)
     
@@ -33,14 +32,6 @@ def main(Base_config):
     
     for i in p.examples():
         example_tree = insert(example_tree,i)
-
-    # print(method_tree.children()[1].me())
-    # print(method_tree.children()[1].examples())
-
-
-    # s3 = boto3.client('s3')
-    # bucket_name = 'jsonofthetree'
-    # json_key = 'data.json'
 
 
     method_rel_key = "method_relation.json"
@@ -59,15 +50,6 @@ def main(Base_config):
 
     with open(example_rel_key, 'w') as fp:
         json.dump(relation_example, fp)
-
-    json_relation_method = json.dumps(relation_method)
-    json_relation_app = json.dumps(relation_app)
-    json_relation_example = json.dumps(relation_example)
-
-    # s3.put_object(Bucket=bucket_name, Key=method_rel_key, Body=json_relation_method, ACL='public-read')
-    # s3.put_object(Bucket=bucket_name, Key=app_rel_key, Body=json_relation_app, ACL='public-read')
-    # s3.put_object(Bucket=bucket_name, Key=example_rel_key, Body=json_relation_example, ACL='public-read')
-
 
 
 

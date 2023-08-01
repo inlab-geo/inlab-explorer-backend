@@ -1,6 +1,3 @@
-# import git
-#import subprocess
-#(might delete if never used) import pathlib
 import os
 import yaml
 import json
@@ -90,12 +87,10 @@ class Search:
                             data = yaml.safe_load(file)
                             for k in data['method'].keys():
                                 gpath = self._config.example_headfix + "/"
-                                # gpath = "https://github.com/Denghu-JI/cofi-examples/tree/main/examples/"
                                 gpath += path[37:]
                                 e = Example(data['title'],k,gpath + k, data['application domain'].split(" -> "),data['description'],data['method'][k])
                                 self._examples.append(e)
                     except Exception as e:
-                        # print(e)
                         pass
 
             break
