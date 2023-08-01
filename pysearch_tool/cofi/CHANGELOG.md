@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+<<<<<<< HEAD
+## v0.2.3 (31/07/2023)
+
+### CoFI Utils
+
+- A new class, `cofi.utils.EnsembleOfInversions`, has been introduced to replace `cofi.utils.run_multiple_inversions`
+
+=======
+>>>>>>> change yaml
 ## v0.2.2 (17/07/2023)
 
 ### CoFI Utils

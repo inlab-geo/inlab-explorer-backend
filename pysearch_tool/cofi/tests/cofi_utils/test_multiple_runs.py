@@ -36,12 +36,21 @@ def problems_and_options():
 
 def test_run_multiple_sequential(problems_and_options):
     problems, inv_options = problems_and_options
+<<<<<<< HEAD
+    my_ensemble = cofi.utils.InversionPool(
+        problems,
+=======
     results, callback_results = cofi.utils.run_multiple_inversions(
         problems, 
+>>>>>>> change yaml
         inv_options, 
         callback, 
         False
     )
+<<<<<<< HEAD
+    results, callback_results = my_ensemble.run()
+=======
+>>>>>>> change yaml
     for res in results:
         assert isinstance(res, cofi.InversionResult)
         assert pytest.approx(res.model.item(), abs=1e-2) == 0
@@ -50,12 +59,20 @@ def test_run_multiple_sequential(problems_and_options):
 
 def test_run_multiple_parallel(problems_and_options):
     problems, inv_options = problems_and_options
+<<<<<<< HEAD
+    my_ensemble = cofi.utils.InversionPool(
+=======
     results, callback_results = cofi.utils.run_multiple_inversions(
+>>>>>>> change yaml
         problems, 
         inv_options, 
         callback, 
         True
     )
+<<<<<<< HEAD
+    results, callback_results = my_ensemble.run()
+=======
+>>>>>>> change yaml
     for res in results:
         assert isinstance(res, cofi.InversionResult)
         assert pytest.approx(res.model.item(), abs=1e-2) == 0
@@ -63,6 +80,22 @@ def test_run_multiple_parallel(problems_and_options):
         assert pytest.approx(callback_res, abs=1e-6) == 0
 
 def test_empty_list(problems_and_options):
+<<<<<<< HEAD
+    problems, inv_options = problems_and_options
+    with pytest.raises(ValueError, match=r".*empty list detected.*"):
+        cofi.utils.InversionPool([], inv_options)
+    with pytest.raises(ValueError, match=r".*empty list detected.*"):
+        cofi.utils.InversionPool(problems, [])
+
+def test_unmatching_list_length(problems_and_options):
+    problems, inv_options = problems_and_options
+    with pytest.raises(ValueError, match=r".*mismatch in lengths.*"):
+        cofi.utils.InversionPool(
+            problems, 
+            [inv_options, inv_options, inv_options]
+        )
+=======
     _, inv_options = problems_and_options
     with pytest.raises(ValueError, match=r".*empty list detected.*"):
         cofi.utils.run_multiple_inversions([], inv_options)
+>>>>>>> change yaml
