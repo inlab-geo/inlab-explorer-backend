@@ -1,4 +1,4 @@
-name: Clone, copy, and push cofi repo
+name: Generate json file and push to frontend
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
         repository: 'inlab-geo/cofi'
         path: 'cofi'
     
-    - name: Copy files to search engine
+    - name: Copy files to search engine (cofi)
       run: |
         cp -R cofi/. pysearch_tool/cofi
 
@@ -29,26 +29,24 @@ jobs:
         repository: 'inlab-geo/espresso'
         path: 'espresso'
     
-    - name: Copy files to search engine
+    - name: Copy files to search engine (espresso)
       run: |
         cp -R espresso/. pysearch_tool/espresso
 
-    - name: Checkout source repo (cofi-example)
+    - name: Checkout source repo (cofi-examples)
       uses: actions/checkout@v2
       with:
         repository: 'inlab-geo/cofi-examples'
         path: 'cofi-examples'
     
-    - name: Copy files to search engine
+    - name: Copy files to search engine (cofi-examples)
       run: |
         cp -R cofi-examples/. pysearch_tool/cofi-examples
-
 
     - name: Checkout target repo
       uses: actions/checkout@v2
       with:
-        repository: 'Denghu-JI/AWS-app-hosting'
-        token: ${{ secrets.PAT }} 
+        repository: 'inlab-geo/inlab-explorer'
         path: 'target-repo'
 
     - name: Set up Python
@@ -83,11 +81,10 @@ jobs:
       run: |
         if [[ "${{ env.changes_detected }}" == "true" ]]; then
           cd target-repo
-          git config user.email "denghu.ji7201@gmail.com"
-          git config user.name "Auto-reaction-update"
-          git commit -m "Added JSON files"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git commit -m "chore: update JSON files"
           git push
         else
           echo "No changes to push"
         fi
-
