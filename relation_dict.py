@@ -137,17 +137,21 @@ def relation_dict(node):
 def relation_pack(node):
     data_doc = {}
     data_git = {}
+    data_des = {}
     with open(Base_config.search_folder + Base_config.method_folder + "__init__.py") as file:
         while True:
             line = file.readline()
             if line:
                 if line[:12]=="# LinkDoc : ":
-                    data_doc[line.strip('\n')[12:].split(" -> ")[0]] = line.strip('\n')[12:].split("->")[1]
+                    data_doc[line.strip('\n')[12:].split(" -> ")[0]] = line.strip('\n')[12:].split(" -> ")[1]
                 if line[:12]=="# LinkGit : ":
-                    data_git[line.strip('\n')[12:].split(" -> ")[0]] = line.strip('\n')[12:].split("->")[1]
+                    data_git[line.strip('\n')[12:].split(" -> ")[0]] = line.strip('\n')[12:].split(" -> ")[1]
+                if line[:16]=="# Description : ":
+                    print(1)
+                    data_des[line.strip('\n')[16:].split(" -> ")[0]] = line.strip('\n')[16:].split(" -> ")[1]
             else:
                 break
-
+        print(data_des)
         node_dict = {}
         node_dict["name"] = node.me()
  
@@ -160,10 +164,16 @@ def relation_pack(node):
             node_dict["link_doc"] = data_doc[node.me()]
         else:
             node_dict["link_doc"] = node.doc()
+            
+        if node.me() in data_des.keys():
+            node_dict["description"] = data_des[node.me()]
+        else:
+            node_dict["description"] = node.description()
+            
+            
         if node.examples():
             node_dict["examples"] = node.examples()
         node_dict["children"] = []
-        node_dict["description"] = node.description()
         if node.children():
             for j in node.children():
                 node_dict["children"].append(relation_pack(j))
