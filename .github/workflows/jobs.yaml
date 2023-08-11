@@ -84,6 +84,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git commit -m "chore: update JSON files"
+          git remote set-url origin https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/inlab-geo/inlab-explorer.git
           git push
         else
           echo "No changes to push"
