@@ -74,6 +74,8 @@ jobs:
         if [[ -n "$(git status --porcelain)" ]]; then
           echo "changes_detected=true"
           echo "changes_detected=true" >> $GITHUB_ENV
+          git config --global --unset user.name
+          git config --global --unset user.email
         else
           echo "changes_detected=false"
           echo "changes_detected=false" >> $GITHUB_ENV
