@@ -76,10 +76,10 @@ jobs:
         else
           echo "changes_detected=false" >> $GITHUB_ENV
         fi
-
+  
     - name: Pushes to another repository
       id: push_directory
-      if: "${{ env.changes_detected }}" == "true"
+      if: env.changes_detected == 'true'
       uses: cpina/github-action-push-to-another-repository@main
       env:
         API_TOKEN_GITHUB: ${{ secrets.REPO_ACCESS_TOKEN }}
