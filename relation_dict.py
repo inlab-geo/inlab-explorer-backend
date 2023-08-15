@@ -142,16 +142,14 @@ def relation_pack(node):
         while True:
             line = file.readline()
             if line:
-                if line[:12]=="# LinkDoc : ":
+                if line.startswith("# link_doc: "):
                     data_doc[line.strip('\n')[12:].split(" -> ")[0]] = line.strip('\n')[12:].split(" -> ")[1]
-                if line[:12]=="# LinkGit : ":
+                if line.startswith("# link_git: "):
                     data_git[line.strip('\n')[12:].split(" -> ")[0]] = line.strip('\n')[12:].split(" -> ")[1]
-                if line[:16]=="# Description : ":
-                    print(1)
-                    data_des[line.strip('\n')[16:].split(" -> ")[0]] = line.strip('\n')[16:].split(" -> ")[1]
+                if line.startswith("# description: "):
+                    data_des[line.strip('\n')[16:].split(" -> ")[0]] = line.strip('\n')[15:].split(" -> ")[1]
             else:
                 break
-        print(data_des)
         node_dict = {}
         node_dict["name"] = node.me()
  
