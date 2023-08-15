@@ -147,7 +147,7 @@ def relation_pack(node):
                 if line.startswith("# link_git: "):
                     data_git[line.strip('\n')[12:].split(" -> ")[0]] = line.strip('\n')[12:].split(" -> ")[1]
                 if line.startswith("# description: "):
-                    data_des[line.strip('\n')[16:].split(" -> ")[0]] = line.strip('\n')[15:].split(" -> ")[1]
+                    data_des[line.strip('\n')[15:].split(" -> ")[0]] = line.strip('\n')[15:].split(" -> ")[1]
             else:
                 break
         node_dict = {}
