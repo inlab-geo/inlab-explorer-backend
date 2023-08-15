@@ -87,8 +87,9 @@ jobs:
         API_TOKEN_GITHUB: ${{ secrets.REPO_ACCESS_TOKEN }}
       with:
         source-directory: target-repo/
-        destination-github-username: 'inlab-geo'
+        destination-github-username: 'jwhhh'
+        destination-repository-username: 'inlab-geo'
         destination-repository-name: 'inlab-explorer'
-        user-name: 'jwhhh'
+        user-name: 'Jiawen'
         user-email: 'hanghur@gmail.com'
-        commit-message: "chore: update JSON files from commit"
+        commit-message: "chore: update JSON files"
