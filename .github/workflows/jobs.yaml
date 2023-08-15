@@ -79,17 +79,15 @@ jobs:
           echo "changes_detected=false" >> $GITHUB_ENV
         fi
   
-    - name: Pushes to another repository
-      id: push_directory
-      if: env.changes_detected == 'true'
-      uses: cpina/github-action-push-to-another-repository@main
-      env:
-        API_TOKEN_GITHUB: ${{ secrets.REPO_ACCESS_TOKEN }}
-      with:
-        source-directory: target-repo/
-        destination-github-username: 'jwhhh'
-        destination-repository-username: 'inlab-geo'
-        destination-repository-name: 'inlab-explorer'
-        user-name: 'Jiawen'
-        user-email: 'hanghur@gmail.com'
-        commit-message: "chore: update JSON files"
+    - name: Commit and push if changes detected
+      run: |
+        if [[ "${{ env.changes_detected }}" == "true" ]]; then
+          cd target-repo
+          git config --global user.name "jwhhh"
+          git config --global user.email 'hanghur@gmail.com'
+          git commit -m "chore: update JSON files"
+          git remote set-url origin https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/inlab-geo/inlab-explorer.git
+          git push
+        else
+          echo "No changes to push"
+        fi
