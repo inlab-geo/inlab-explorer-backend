@@ -74,8 +74,6 @@ jobs:
         if [[ -n "$(git status --porcelain)" ]]; then
           echo "changes_detected=true"
           echo "changes_detected=true" >> $GITHUB_ENV
-          git config --global user.name "jwhhh"
-          git config --global user.email "hanghur@gmail.com"
         else
           echo "changes_detected=false"
           echo "changes_detected=false" >> $GITHUB_ENV
@@ -91,7 +89,6 @@ jobs:
         source-directory: target-repo/
         destination-github-username: 'inlab-geo'
         destination-repository-name: 'inlab-explorer'
-        user-name: jwhhh
-        user-email: hanghur@gmail.com
-        commit-message: "chore: update JSON files from ORIGIN_COMMIT"
-        target-branch: main
+        user-name: 'jwhhh'
+        user-email: 'hanghur@gmail.com'
+        commit-message: "chore: update JSON files from commit"
