@@ -7,7 +7,7 @@ on:
     types: [new_commit]
 
 jobs:
-  copy-repo:
+  gen_json_n_push:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout this repo
@@ -72,8 +72,10 @@ jobs:
         cd target-repo
         git add .
         if [[ -n "$(git status --porcelain)" ]]; then
+          echo "changes_detected=true"
           echo "changes_detected=true" >> $GITHUB_ENV
         else
+          echo "changes_detected=false"
           echo "changes_detected=false" >> $GITHUB_ENV
         fi
   
@@ -90,16 +92,3 @@ jobs:
         user-email: github-actions[bot]@users.noreply.github.com
         commit-message: "chore: update JSON files from ORIGIN_COMMIT"
         target-branch: main
-
-    # - name: Commit and push if changes detected
-    #   run: |
-    #     if [[ "${{ env.changes_detected }}" == "true" ]]; then
-    #       cd target-repo
-    #       git config --global user.name "github-actions[bot]"
-    #       git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-    #       git commit -m "chore: update JSON files"
-    #       git remote set-url origin https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/inlab-geo/inlab-explorer.git
-    #       git push
-    #     else
-    #       echo "No changes to push"
-    #     fi
