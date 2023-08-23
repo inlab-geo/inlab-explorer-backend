@@ -22,7 +22,7 @@ def main(Base_config):
     p._search()
     method_tree = hirc_tree('CoFI')
     apps_tree = hirc_tree('37 EARTH SCIENCES')
-    example_tree = hirc_tree('37 EARTH SCIENCES')
+    example_tree = hirc_tree('CoFI Examples')
     
     for i in p.mds():
         method_tree = insert(method_tree,i)
