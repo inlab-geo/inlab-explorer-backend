@@ -88,7 +88,7 @@ jobs:
           git commit -m "chore: update JSON files"
           git remote set-url origin git@github.com:inlab-geo/inlab-explorer.git
           git remote add origin2 git@github.com:inlab-site/inlab-explorer.git
-          ssh-agent bash -c 'ssh-add <(echo "${{ secrets.SSH_PRIVATE_KEY }}"); git push origin/main; git push origin2/main'
+          ssh-agent bash -c 'ssh-add <(echo "${{ secrets.SSH_PRIVATE_KEY }}"); git push origin main; git push origin2 main'
         else
           echo "No changes to push"
         fi
