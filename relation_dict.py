@@ -102,10 +102,9 @@ class hirc_tree:
 
 def insert(tre, node):
         try:
-            tre.add_examples(node.examples())
+            tre.add_examples(node.examples())       # CoFI methods
         except Exception as e:
-            # print(e)
-            pass
+            pass                    # Espresso application domains
         lst = node.tree()
         if len(lst)!= 1:
             token = lst.pop(0)
@@ -128,7 +127,37 @@ def insert(tre, node):
             
         return tre
 
+def insert_cofi_examples(tree, node):
+    # Start at the root
+    current_node = tree
 
+    # Traverse the node's tree path, navigating/creating nodes as necessary
+    for level in node.tree():
+        # Prevent duplicate "CoFI Examples" as a child of the root
+        if current_node == tree and level == "CoFI Examples":
+            matching_children = [tree]
+        else:
+            # Check if a child with the current level's name already exists
+            matching_children = [child for child in current_node.children() if child.me() == level]
+
+        # If the child exists, navigate to it
+        if matching_children:
+            current_node = matching_children[0]
+        # If the child doesn't exist, create it and navigate to it
+        else:
+            new_child = hirc_tree(level)
+            new_child.add_parent(current_node)
+            current_node.add_child(new_child)
+            current_node = new_child
+
+        # Add the filename as an example to the current node's examples list
+        example = {
+            'name': node.filename(), 
+            'description': node.des(), 
+            'linkToGit': node.path(), 
+        }
+        if example not in current_node.examples():
+            current_node.add_examples([example])
 
 
 def relation_dict(node):

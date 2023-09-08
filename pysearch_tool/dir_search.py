@@ -63,7 +63,6 @@ class Search:
                                 app_tree = line.strip('\n')[2:].split(" -> ")
                                 app_des = file.readline().strip('\n')[15:]
                                 app_path = self._config.application_headfix + file_path[22:]
-                                # print(app_path)
                                 self._apps.append(App(app_path, app_tree, app_des))                    
                     else:
                         break
@@ -221,4 +220,6 @@ class Example:
     
     def doc(self):
         return self._documentLink
-            
+    
+    def __repr__(self) -> str:
+        return f"{self._name}: {self._filename}"
