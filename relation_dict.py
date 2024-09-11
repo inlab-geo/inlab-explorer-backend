@@ -113,10 +113,11 @@ class RelationTree:
 
 
 def insert(tre, node):
-        try:
-            tre.add_examples(node.examples())       # CoFI methods
-        except Exception as e:
-            pass                    # Espresso application domains
+        try:    # CoFI methods
+            tre.add_examples(node.examples())
+            tre.add_tutorials(node.tutorials())
+        except Exception as e:      # Espresso application domains
+            pass
         lst = node.tree()
         if len(lst)!= 1:
             token = lst.pop(0)

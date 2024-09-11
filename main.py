@@ -16,10 +16,10 @@ def main(BaseConfig):
     example_tree = RelationTree('CoFI Examples')
     
     for i in p.methods():
-        insert(method_tree,i)
+        insert(method_tree, i)
     
     for i in p.applications():
-        insert(apps_tree,i)
+        insert(apps_tree, i)
     
     for i in p.examples():
         insert_cofi_examples(example_tree, i)
