@@ -5,6 +5,7 @@ on:
     branches: [ main ]
   repository_dispatch:
     types: [new_commit]
+  workflow_dispatch:
 
 jobs:
   gen_json_n_push:
