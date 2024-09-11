@@ -29,9 +29,11 @@
 #         pygimli_dcip.ipynb <- Newton conjugate gradient trust-region algorithm (trust-ncg) <- scipy.optimize.minimize <- non-linear <- optimization <- parameter estimation <- CoFI
 #         pygimli_dcip.ipynb <- RAdam <- torch.optim <- non-linear <- optimization <- parameter estimation <- CoFI
 
-import yaml
-from config import Base_config
-class hirc_tree:
+from config import BaseConfig
+from pysearch_tool.dir_search import Example
+
+
+class RelationTree:
     def __init__(self, me):
         """
         relationship tree for as parsing result
@@ -50,6 +52,7 @@ class hirc_tree:
         self._path = None
         self._description = None
         self._examples = []
+        self._tutorials = []
         self._doc = None
 
         #---graphics property
@@ -88,17 +91,26 @@ class hirc_tree:
 
     def examples(self):
         return self._examples
+    
+    def tutorials(self):
+        return self._tutorials
 
-    def add_examples(self, e):
+    def add_examples(self, e: Example):
         for i in e:
             if i['name'] not in [j['name'] for j in self._examples]:
                 self._examples.append(i)
+                
+    def add_tutorials(self, e: Example):
+        for i in e:
+            if i['name'] not in [j['name'] for j in self._tutorials]:
+                self._tutorials.append(i)
 
     def add_doc(self, d):
         self._doc = d
 
     def doc(self):
         return self._doc
+
 
 def insert(tre, node):
         try:
@@ -116,7 +128,7 @@ def insert(tre, node):
                         insert(tok, node)
                         flag = True
                 if not flag:
-                    btree = hirc_tree(child)
+                    btree = RelationTree(child)
                     btree.add_parent(token)
                     insert(btree, node)
                     tre.add_child(btree)
@@ -127,7 +139,7 @@ def insert(tre, node):
             
         return tre
 
-def insert_cofi_examples(tree, node):
+def insert_cofi_examples(tree, node: Example, isTutorial=False):
     # Start at the root
     current_node = tree
 
@@ -145,19 +157,28 @@ def insert_cofi_examples(tree, node):
             current_node = matching_children[0]
         # If the child doesn't exist, create it and navigate to it
         else:
-            new_child = hirc_tree(level)
+            new_child = RelationTree(level)
             new_child.add_parent(current_node)
             current_node.add_child(new_child)
             current_node = new_child
 
         # Add the filename as an example to the current node's examples list
-        example = {
-            'name': node.filename(), 
-            'description': node.des(), 
-            'linkToGit': node.path(), 
-        }
-        if example not in current_node.examples():
-            current_node.add_examples([example])
+        if isTutorial:
+            tutorial = {
+                'name': node.filename(),
+                'description': node.des(),
+                'linkToGit': node.path(),
+            }
+            if tutorial not in current_node.tutorials():
+                current_node.add_tutorials([tutorial])
+        else:
+            example = {
+                'name': node.filename(), 
+                'description': node.des(), 
+                'linkToGit': node.path(), 
+            }
+            if example not in current_node.examples():
+                current_node.add_examples([example])
 
 
 def relation_dict(node):
@@ -167,7 +188,7 @@ def relation_pack(node):
     data_doc = {}
     data_git = {}
     data_des = {}
-    with open(Base_config.search_folder + Base_config.method_folder + "__init__.py") as file:
+    with open(BaseConfig.search_folder + BaseConfig.method_folder + "__init__.py") as file:
         while True:
             line = file.readline()
             if line:
@@ -196,10 +217,12 @@ def relation_pack(node):
             node_dict["description"] = data_des[node.me()]
         else:
             node_dict["description"] = node.description()
-            
-            
+        
         if node.examples():
             node_dict["examples"] = node.examples()
+        if node.tutorials():
+            node_dict["tutorials"] = node.tutorials()
+        
         node_dict["children"] = []
         if node.children():
             for j in node.children():

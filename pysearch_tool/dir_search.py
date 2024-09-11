@@ -1,6 +1,6 @@
 import os
 import yaml
-import json
+from typing import List
 
 
 class Search:
@@ -20,22 +20,28 @@ class Search:
             examples
         """
         self._method_path = config.search_folder + config.method_folder
-        self._app_path = config.search_folder + config.application_folder
-        self._prob_path = config.search_folder + config.example_folder
+        self._application_path = config.search_folder + config.application_folder
+        self._examples_path = config.search_folder + config.example_folder
+        self._tutorial_path = config.search_folder + config.tutorial_folder
         self._config = config
         self._methods = []
-        self._apps = []
+        self._applications = []
         self._examples = []
+        self._tutorials = []
         self._method_to_examples = {}
+        self._method_tutorials = {}
 
-    def mds(self):
+    def methods(self):
         return self._methods
     
-    def aps(self):
-        return self._apps
+    def applications(self):
+        return self._applications
 
     def examples(self):
         return self._examples
+    
+    def tutorials(self):
+        return self._tutorials
     
     def _search(self):
         def parse(file_path, mode):
@@ -63,25 +69,25 @@ class Search:
                                 app_tree = line.strip('\n')[2:].split(" -> ")
                                 app_des = file.readline().strip('\n')[15:]
                                 app_path = self._config.application_headfix + file_path[22:]
-                                self._apps.append(App(app_path, app_tree, app_des))                    
+                                self._applications.append(App(app_path, app_tree, app_des))                    
                     else:
                         break
         for _, _ , files in os.walk(self._method_path):
             for i in files:
                 parse(self._method_path + i, "Method")
 
-        for root, dirs, files in os.walk(self._app_path):
-            if root == self._app_path:
+        for root, dirs, files in os.walk(self._application_path):
+            if root == self._application_path:
                 for dirr in dirs:
-                    parse(self._app_path + dirr + '/' + dirr + '.py', "Application")
+                    parse(self._application_path + dirr + '/' + dirr + '.py', "Application")
         
 
         # self.init_method_to_examples()
-        for root, dirs, files in os.walk(self._prob_path):
-            if root == self._prob_path:
+        for root, dirs, files in os.walk(self._examples_path):
+            if root == self._examples_path:
                 for dirr in dirs:
                     try:
-                        path = self._prob_path + dirr + '/'
+                        path = self._examples_path + dirr + '/'
                         with open(path + 'meta.yml', 'r') as file:
                             data = yaml.safe_load(file)
                             for k in data['method'].keys():
@@ -91,7 +97,21 @@ class Search:
                                 self._examples.append(e)
                     except Exception as e:
                         pass
-
+            break
+        for root, dirs, files in os.walk(self._tutorial_path):
+            if root == self._tutorial_path:
+                for dirr in dirs:
+                    try:
+                        path = self._tutorial_path + dirr + '/'
+                        with open(path + 'meta.yml', 'r') as file:
+                            data = yaml.safe_load(file)
+                            for k in data['method'].keys():
+                                gpath = self._config.tutorial_headfix + "/"
+                                gpath += path[38:]
+                                e = Example(data['title'],k,gpath + k, data['application domain'].split(" -> "),data['description'],data['method'][k])
+                                self._tutorials.append(e)
+                    except Exception as e:
+                        pass
             break
         #-------------------
 
@@ -103,6 +123,13 @@ class Search:
                     d['description'] = example.des()
                     d['linkToGit'] =  example.path()
                     method.add_examples(d)
+            for tutorial in self._tutorials:
+                if " -> ".join(method.tree()) in tutorial.methods():
+                    d = {}
+                    d['name'] = tutorial.name() + ' - ' + tutorial.filename()
+                    d['description'] = tutorial.des()
+                    d['linkToGit'] =  tutorial.path()
+                    method.add_tutorials(d)
 
                     
 class Method:
@@ -124,7 +151,7 @@ class Method:
         self._des = des
         self._documentLink = None
         self._examples = []
-    
+        self._tutorials = []
     
     def path(self):
         return self._path
@@ -140,10 +167,15 @@ class Method:
 
     def examples(self):
         return self._examples
-
-    def add_examples(self, exp):
-        self._examples.append(exp)
     
+    def tutorials(self):
+        return self._tutorials
+
+    def add_examples(self, examples: List["Example"]):
+        self._examples.append(examples)
+    
+    def add_tutorials(self, tutorials: List["Example"]):
+        self._tutorials.append(tutorials)
 
     
 class App:

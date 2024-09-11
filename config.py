@@ -22,7 +22,7 @@ class PrintableConfig:
         return "\n    ".join(lines)
 
 @dataclass
-class Base_config(PrintableConfig):
+class BaseConfig(PrintableConfig):
     """Configuration of machine setup"""
     
     git_cofi: str = "https://github.com/inlab-geo/cofi.git"
@@ -38,16 +38,13 @@ class Base_config(PrintableConfig):
     method_folder: str = "cofi/src/cofi/tools/"
     application_folder: str = "espresso/contrib/"
     example_folder: str = "cofi-examples/examples/"
+    tutorial_folder: str = "cofi-examples/tutorials/"
     """important: folders are followed by hash!"""
 
     method_headfix = "https://github.com/inlab-geo/cofi/blob/main"
     application_headfix = "https://github.com/inlab-geo/espresso/tree/main"
     example_headfix = "https://github.com/inlab-geo/cofi-examples/tree/main/examples"
+    tutorial_headfix = "https://github.com/inlab-geo/cofi-examples/tree/main/tutorials"
     """this will be the headfix in the website address, to navigate to git repo"""
     
     meta_path = "pysearch_tool/cofi/src/cofi/tools/meta.yaml"
-
-    
-
-
-
