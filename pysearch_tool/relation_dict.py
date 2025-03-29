@@ -29,8 +29,8 @@
 #         pygimli_dcip.ipynb <- Newton conjugate gradient trust-region algorithm (trust-ncg) <- scipy.optimize.minimize <- non-linear <- optimization <- parameter estimation <- CoFI
 #         pygimli_dcip.ipynb <- RAdam <- torch.optim <- non-linear <- optimization <- parameter estimation <- CoFI
 
-from config import BaseConfig
-from pysearch_tool.dir_search import Example
+from pysearch_tool.config import BaseConfig
+from pysearch_tool.dir_search import CoFIExample
 
 
 class RelationTree:
@@ -95,12 +95,12 @@ class RelationTree:
     def tutorials(self):
         return self._tutorials
 
-    def add_examples(self, e: Example):
+    def add_examples(self, e: CoFIExample):
         for i in e:
             if i['name'] not in [j['name'] for j in self._examples]:
                 self._examples.append(i)
                 
-    def add_tutorials(self, e: Example):
+    def add_tutorials(self, e: CoFIExample):
         for i in e:
             if i['name'] not in [j['name'] for j in self._tutorials]:
                 self._tutorials.append(i)
@@ -112,19 +112,19 @@ class RelationTree:
         return self._doc
 
 
-def insert(tre, node):
+def insert(tree, node):
         try:    # CoFI methods
-            tre.add_examples(node.examples())
-            tre.add_tutorials(node.tutorials())
+            tree.add_examples(node.examples())
+            tree.add_tutorials(node.tutorials())
         except Exception as e:      # Espresso application domains
             pass
         lst = node.tree()
         if len(lst)!= 1:
             token = lst.pop(0)
-            if token == tre.me():
+            if token == tree.me():
                 flag = False
                 child = lst[0]
-                for tok in tre.children():
+                for tok in tree.children():
                     if child == tok.me():
                         insert(tok, node)
                         flag = True
@@ -132,15 +132,15 @@ def insert(tre, node):
                     btree = RelationTree(child)
                     btree.add_parent(token)
                     insert(btree, node)
-                    tre.add_child(btree)
+                    tree.add_child(btree)
         else:
-            tre.add_description(node.des())
-            tre.add_path(node.path())
-            tre.add_doc(node.doc())
+            tree.add_description(node.des())
+            tree.add_path(node.path())
+            tree.add_doc(node.doc())
             
-        return tre
+        return tree
 
-def insert_cofi_examples(tree, node: Example, isTutorial=False):
+def insert_cofi_examples(tree, node: CoFIExample, isTutorial=False):
     # Start at the root
     current_node = tree
 

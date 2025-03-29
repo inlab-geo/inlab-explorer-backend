@@ -1,47 +1,48 @@
 """
 This is the main script for running the parser.
-Please see config.py to change any of configs.
+Please see pysearch_tool/config.py to change any of configs.
 """
-from config import BaseConfig
-from relation_dict import RelationTree, insert, insert_cofi_examples, relation_dict
+from pysearch_tool.config import BaseConfig
+from pysearch_tool.relation_dict import RelationTree, insert, insert_cofi_examples, relation_dict
 from pysearch_tool import dir_search
 import json
 
 
-def main(BaseConfig):
-    p = dir_search.Search(BaseConfig)
-    p._search()
-    method_tree = RelationTree('CoFI')
-    apps_tree = RelationTree('Espresso')
-    example_tree = RelationTree('CoFI Examples')
+def main(config):
+    p = dir_search.Search(config)
+    p.search()
+    
+    cofi_method_tree = RelationTree('CoFI')
+    espresso_application_tree = RelationTree('Espresso')
+    cofi_example_tree = RelationTree('CoFI Examples')
     
     for i in p.methods():
-        insert(method_tree, i)
+        insert(cofi_method_tree, i)
     
     for i in p.applications():
-        insert(apps_tree, i)
+        insert(espresso_application_tree, i)
     
     for i in p.examples():
-        insert_cofi_examples(example_tree, i)
+        insert_cofi_examples(cofi_example_tree, i)
     
     for i in p.tutorials():
-        insert_cofi_examples(example_tree, i, isTutorial=True)
+        insert_cofi_examples(cofi_example_tree, i, isTutorial=True)
 
-    method_rel_key = "method_relation.json"
-    app_rel_key = "app_relation.json"
-    example_rel_key = "example_relation.json"
+    file_cofi_method = "method_relation.json"
+    file_espresso_application = "app_relation.json"
+    file_cofi_example = "example_relation.json"
 
-    relation_method = relation_dict(method_tree)
-    relation_app = relation_dict(apps_tree)
-    relation_example = relation_dict(example_tree)
+    relation_method = relation_dict(cofi_method_tree)
+    relation_app = relation_dict(espresso_application_tree)
+    relation_example = relation_dict(cofi_example_tree)
 
-    with open(method_rel_key, 'w') as fp:
+    with open(file_cofi_method, 'w') as fp:
         json.dump(relation_method, fp, indent=2)
     
-    with open(app_rel_key, 'w') as fp:
+    with open(file_espresso_application, 'w') as fp:
         json.dump(relation_app, fp, indent=2)
 
-    with open(example_rel_key, 'w') as fp:
+    with open(file_cofi_example, 'w') as fp:
         json.dump(relation_example, fp, indent=2)
 
 
